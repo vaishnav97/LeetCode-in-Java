@@ -1,0 +1,46 @@
+class Solution {
+    private boolean isPossible(int[] nums, int maxSubarray, int maxSum) {
+        int subarrayCount = 1;
+        int totalSum = 0;
+
+        for (int num : nums) {
+            if (num > maxSum) {
+                return false;
+            }
+
+            totalSum += num;
+            if (totalSum > maxSum) {
+                subarrayCount++;
+                totalSum = num;
+            }
+
+            if (subarrayCount > maxSubarray) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int splitArray(int[] nums, int m) {
+        int start = nums[0], end = 0;
+        for (int num : nums) {
+            end += num;
+        }
+
+        int ans = start;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (isPossible(nums, m, mid)) {
+                ans = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+}
