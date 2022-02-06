@@ -1,0 +1,47 @@
+Quick select:
+
+class Solution {
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    private int findPartition(int[] nums, int start, int end) {
+        int pivot = nums[end];
+
+        int i = start, j = start;
+        while (i <= end) {
+            if (nums[i] > pivot) {
+                i++;
+            } else {
+                swap(nums, i, j);
+                i++;
+                j++;
+            }
+        }
+
+        return j - 1;
+    }
+
+    public int findKthLargest(int[] nums, int k) {
+        int start = 0, end = nums.length - 1;
+        int index = nums.length - k;
+
+        while (start <= end) {
+            int pivot = findPartition(nums, start, end);
+
+            if (index == pivot) {
+                return nums[pivot];
+            }
+
+            if (index < pivot) {
+                end = pivot - 1;
+            } else {
+                start = pivot + 1;
+            }
+        }
+
+        return nums[start];
+    }
+}
