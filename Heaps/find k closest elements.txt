@@ -1,0 +1,103 @@
+Binary Search Solution:
+
+class Solution {
+    private int binarySearch(int[] nums, int target) {
+        int start = 0, end = nums.length - 1;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[mid] < target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        return start;
+    }
+
+    public List<Integer> findClosestElements(int[] nums, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        if (nums.length == 0 || k == 0) {
+            return res;
+        }
+
+        int index = binarySearch(nums, x);
+
+        int leftBoundary = Math.max(index - k - 1, 0);
+        int rightBoundary = Math.min(index + k - 1, nums.length - 1);
+
+        while ((rightBoundary - leftBoundary + 1) > k) {
+            int leftDiff = Math.abs(x - nums[leftBoundary]);
+            int rightDiff = Math.abs(x - nums[rightBoundary]);
+
+            if (leftDiff <= rightDiff) {
+                rightBoundary--;
+            } else {
+                leftBoundary++;
+            }
+        }
+
+        for (int i = leftBoundary; i <= rightBoundary; i++) {
+            res.add(nums[i]);
+        }
+
+        return res;
+    }
+}
+
+
+Heap Solution:
+
+class Element {
+    int diff;
+    int num;
+
+    public Element(int diff, int num) {
+        this.diff = diff;
+        this.num = num;
+    }
+}
+
+class ElementComparator implements Comparator<Element> {
+    public int compare(Element e1, Element e2) {
+        if (e1.diff == e2.diff) {
+            return Integer.compare(e2.num, e1.num);
+        }
+
+        return Integer.compare(e2.diff, e1.diff);
+    }
+}
+
+class Solution {
+    public List<Integer> findClosestElements(int[] nums, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+
+        if (nums.length == 0 || k == 0) {
+            return res;
+        }
+
+        Queue<Element> pq = new PriorityQueue<>(new ElementComparator());
+
+        for (int num : nums) {
+            pq.add(new Element(Math.abs(num - x), num));
+
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        while (pq.size() > 0) {
+            res.add(pq.poll().num);
+        }
+
+        Collections.sort(res);
+
+        return res;
+    }
+}
