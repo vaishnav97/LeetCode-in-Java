@@ -1,0 +1,75 @@
+class Solution {
+    private long getRangeSum(List<Long> prefix, int leftIndex, int rightIndex) {
+        if (leftIndex == -1) {
+            return prefix.get(rightIndex - 1);
+        }
+
+        return prefix.get(rightIndex - 1) - prefix.get(leftIndex);
+    }
+
+    List<Integer> previousSmallerIndexes(int[] nums) {
+        int n = nums.length;
+        List<Integer> res = new ArrayList<>();
+
+        ArrayDeque<int[]> stack = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+            while (stack.size() > 0 && stack.peek()[0] >= nums[i]) {
+                stack.pop();
+            }
+
+            int index = stack.size() > 0 ? stack.peek()[1] : -1;
+            res.add(index);
+            stack.push(new int[] { nums[i], i });
+        }
+
+        return res;
+    }
+
+    List<Integer> nextSmallerIndexes(int[] nums) {
+        int n = nums.length;
+        List<Integer> res = new ArrayList<>();
+
+        ArrayDeque<int[]> stack = new ArrayDeque<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (stack.size() > 0 && stack.peek()[0] >= nums[i]) {
+                stack.pop();
+            }
+
+            int index = stack.size() > 0 ? stack.peek()[1] : n;
+            res.add(0, index);
+            stack.push(new int[] { nums[i], i });
+        }
+
+        return res;
+    }
+
+    public int maxSumMinProduct(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+
+        List<Integer> previousSmaller = previousSmallerIndexes(nums);
+        List<Integer> nextSmaller = nextSmallerIndexes(nums);
+
+        List<Long> prefix = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (i == 0) {
+                prefix.add((long) nums[i]);
+            } else {
+                prefix.add((long) nums[i] + prefix.get(i - 1));
+            }
+        }
+
+        long ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            long rangeSum = getRangeSum(prefix, previousSmaller.get(i), nextSmaller.get(i));
+            ans = Math.max(ans, (long) nums[i] * rangeSum);
+        }
+
+        return (int) (ans % (1000_000_007));
+    }
+}
