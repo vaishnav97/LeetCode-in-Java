@@ -1,0 +1,35 @@
+class Pair {
+    int val;
+    int minVal;
+
+    public Pair(int val, int minVal) {
+        this.val = val;
+        this.minVal = minVal;
+    }
+}
+
+class MinStack {
+
+    private ArrayDeque<Pair> minStack;
+
+    public MinStack() {
+        minStack = new ArrayDeque<>();
+    }
+
+    public void push(int val) {
+        int minVal = minStack.isEmpty() ? val : Math.min(minStack.peek().minVal, val);
+        minStack.push(new Pair(val, minVal));
+    }
+
+    public void pop() {
+        minStack.pop();
+    }
+
+    public int top() {
+        return minStack.peek().val;
+    }
+
+    public int getMin() {
+        return minStack.peek().minVal;
+    }
+}
