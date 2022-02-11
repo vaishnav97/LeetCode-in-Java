@@ -1,0 +1,42 @@
+class Solution {
+    public int longestMountain(int[] nums) {
+        int n = nums.length;
+
+        List<Integer> leftCount = Arrays.asList(new Integer[n]);
+        leftCount.set(0, 0);
+
+        int count = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i - 1]) {
+                count++;
+            } else {
+                count = 0;
+            }
+
+            leftCount.set(i, count);
+        }
+
+        List<Integer> rightCount = Arrays.asList(new Integer[n]);
+        rightCount.set(n - 1, 0);
+
+        count = 0;
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] > nums[i + 1]) {
+                count++;
+            } else {
+                count = 0;
+            }
+
+            rightCount.set(i, count);
+        }
+
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            if (leftCount.get(i) != 0 && rightCount.get(i) != 0) {
+                res = Math.max(res, leftCount.get(i) + rightCount.get(i));
+            }
+        }
+
+        return res == 0 ? res : res + 1;
+    }
+}
