@@ -1,3 +1,41 @@
+Deque Solution: O(N)
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+
+        int[] res = new int[nums.length - k + 1];
+
+        int i = 0, j = 0, index = 0;
+        while (j < nums.length) {
+            while (queue.size() > 0 && queue.peekLast() < nums[j]) {
+                queue.pollLast();
+            }
+
+            queue.offerLast(nums[j]);
+
+            if ((j - i + 1) < k) {
+                j++;
+            } else if ((j - i + 1) == k) {
+                res[index++] = queue.peekFirst();
+
+                if (nums[i] == queue.peekFirst()) {
+                    queue.pollFirst();
+                }
+
+                i++;
+                j++;
+            }
+        }
+
+        return res;
+    }
+}
+
+
+
+Heap Solution: O(NlogK)
+
 class Element {
     int num;
     int index;
