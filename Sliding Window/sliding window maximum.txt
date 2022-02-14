@@ -1,0 +1,43 @@
+class Element {
+    int num;
+    int index;
+
+    Element(int num, int index) {
+        this.num = num;
+        this.index = index;
+    }
+}
+
+class ElementComparator implements Comparator<Element> {
+    public int compare(Element a, Element b) {
+        return Integer.compare(b.num, a.num);
+    }
+}
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        Queue<Element> maxHeap = new PriorityQueue<>(new ElementComparator());
+
+        int[] res = new int[nums.length - k + 1];
+
+        int i = 0, j = 0, index = 0;
+        while (j < nums.length) {
+            maxHeap.add(new Element(nums[j], j));
+
+            if ((j - i + 1) < k) {
+                j++;
+            } else if ((j - i + 1) == k) {
+                res[index++] = maxHeap.peek().num;
+
+                while (maxHeap.size() > 0 && maxHeap.peek().index <= i) {
+                    maxHeap.poll();
+                }
+
+                i++;
+                j++;
+            }
+        }
+
+        return res;
+    }
+}
