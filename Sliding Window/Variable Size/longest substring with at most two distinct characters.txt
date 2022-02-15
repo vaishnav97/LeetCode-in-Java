@@ -1,0 +1,38 @@
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String input) {
+        if (input.length() <= 2) {
+            return input.length();
+        }
+
+        int i = 0, j = 0, distinct = 0, ans = 0;
+
+        Map<Character, Integer> freq = new HashMap<>();
+
+        while (j < input.length()) {
+            char ch = input.charAt(j);
+            freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+
+            if (freq.get(ch) == 1) {
+                distinct++;
+            }
+
+            while (distinct > 2) {
+                ch = input.charAt(i);
+                if (freq.get(ch) != null) {
+                    freq.put(ch, Math.max(0, freq.get(ch) - 1));
+                }
+
+                if (freq.get(ch) == 0) {
+                    distinct--;
+                }
+
+                i++;
+            }
+
+            ans = Math.max(ans, (j - i + 1));
+            j++;
+        }
+
+        return ans;
+    }
+}
