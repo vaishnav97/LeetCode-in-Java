@@ -1,0 +1,39 @@
+class Solution {
+    public int lengthOfLongestSubstringKDistinct(String input, int k) {
+        if (input.length() <= k) {
+            return input.length();
+        }
+
+        Map<Character, Integer> freq = new HashMap<>();
+
+        int i = 0, j = 0, distinct = 0, ans = 0;
+
+        while (j < input.length()) {
+            char ch = input.charAt(j);
+            freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+
+            if (freq.get(ch) == 1) {
+                distinct++;
+            }
+
+            while (distinct > k) {
+                ch = input.charAt(i);
+
+                if (freq.get(ch) != null) {
+                    freq.put(ch, Math.max(0, freq.get(ch) - 1));
+                }
+
+                if (freq.get(ch) == 0) {
+                    distinct--;
+                }
+
+                i++;
+            }
+
+            ans = Math.max(ans, (j - i + 1));
+            j++;
+        }
+
+        return ans;
+    }
+}
