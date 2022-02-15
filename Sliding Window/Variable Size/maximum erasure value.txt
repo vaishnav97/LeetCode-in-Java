@@ -1,0 +1,41 @@
+class Solution {
+    public int maximumUniqueSubarray(int[] nums) {
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        int i = 0, j = 0, distinct = 0, sum = 0, ans = 0;
+
+        while (j < nums.length) {
+            int num = nums[j];
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+
+            sum += num;
+
+            if (freq.get(num) == 1) {
+                distinct++;
+            }
+
+            while (distinct < (j - i + 1)) {
+                num = nums[i];
+                sum -= num;
+
+                if (freq.get(num) != null) {
+                    freq.put(num, Math.max(0, freq.get(num) - 1));
+                }
+
+                if (freq.get(num) == 0) {
+                    distinct--;
+                }
+
+                i++;
+            }
+
+            if (distinct == (j - i + 1)) {
+                ans = Math.max(ans, sum);
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+}
