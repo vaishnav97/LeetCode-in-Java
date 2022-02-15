@@ -18,6 +18,7 @@ class Solution {
 
             while (distinct > 2) {
                 ch = input.charAt(i);
+                
                 if (freq.get(ch) != null) {
                     freq.put(ch, Math.max(0, freq.get(ch) - 1));
                 }

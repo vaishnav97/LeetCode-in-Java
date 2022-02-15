@@ -29,6 +29,7 @@ class Solution {
 
                 i++;
             }
+            
             if (distinct == (j - i + 1)) {
                 ans = Math.max(ans, distinct);
             }
