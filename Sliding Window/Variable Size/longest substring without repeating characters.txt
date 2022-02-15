@@ -1,0 +1,41 @@
+class Solution {
+    public int lengthOfLongestSubstring(String input) {
+        if (input.length() <= 1) {
+            return input.length();
+        }
+
+        int i = 0, j = 0, distinct = 0, ans = 0;
+
+        Map<Character, Integer> freq = new HashMap<>();
+
+        while (j < input.length()) {
+            char ch = input.charAt(j);
+            freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+
+            if (freq.get(ch) == 1) {
+                distinct++;
+            }
+
+            while (distinct < (j - i + 1)) { // duplicate characters will be more in the window
+                ch = input.charAt(i);
+
+                if (freq.get(ch) != null) {
+                    freq.put(ch, Math.max(0, freq.get(ch) - 1));
+                }
+
+                if (freq.get(ch) == 0) {
+                    distinct--;
+                }
+
+                i++;
+            }
+            if (distinct == (j - i + 1)) {
+                ans = Math.max(ans, distinct);
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+}
