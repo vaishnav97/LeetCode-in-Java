@@ -1,0 +1,50 @@
+class Solution {
+    private boolean isValid(String word, Map<String, Integer> freq, int wordSize) {
+        Map<String, Integer> mp = new HashMap<>(freq);
+
+        int i = 0;
+        while (i <= word.length() - wordSize) {
+            String str = word.substring(i, i + wordSize);
+
+            if (!mp.containsKey(str)) {
+                return false;
+            }
+
+            mp.put(str, mp.get(str) - 1);
+
+            if (mp.get(str) == 0) {
+                mp.remove(str);
+            }
+
+            i += wordSize;
+        }
+
+        return mp.isEmpty();
+    }
+
+    public List<Integer> findSubstring(String input, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+
+        if (input == null || input.length() == 0 || words == null || words.length == 0 || words[0].length() == 0) {
+            return ans;
+        }
+
+        Map<String, Integer> freq = new HashMap<>();
+        for (String word : words) {
+            freq.put(word, freq.getOrDefault(word, 0) + 1);
+        }
+
+        int n = input.length(), m = words.length, wordSize = words[0].length();
+        int wordLen = m * wordSize;
+
+        for (int i = 0; i <= n - wordLen; i++) {
+            String currentStr = input.substring(i, i + wordLen);
+
+            if (isValid(currentStr, freq, wordSize)) {
+                ans.add(i);
+            }
+        }
+
+        return ans;
+    }
+}
