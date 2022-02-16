@@ -1,0 +1,31 @@
+class Solution {
+    public int minOperations(int[] nums) {
+        int N = nums.length;
+        Arrays.sort(nums);
+
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        int i = 0, j = 0, ans = N, distinct = 0;
+        while (j < N) {
+            freq.put(nums[j], freq.getOrDefault(nums[j], 0) + 1);
+
+            if (freq.get(nums[j]) == 1) {
+                distinct++;
+            }
+
+            while (i <= j && (nums[j] - nums[i]) > (N - 1)) {
+                freq.put(nums[i], freq.get(nums[i]) - 1);
+
+                if (freq.get(nums[i]) == 0) {
+                    distinct--;
+                }
+                i++;
+            }
+
+            ans = Math.min(ans, N - distinct);
+            j++;
+        }
+
+        return ans;
+    }
+}
