@@ -1,0 +1,40 @@
+Time: O(n ^ 2)
+
+class Solution {
+    public String minWindow(String word, String pattern) {
+        int i = 0, j = 0, start = 0, len = Integer.MAX_VALUE, matched = 0;
+
+        while (j < word.length()) {
+            if (word.charAt(j) == pattern.charAt(matched)) {
+                matched++;
+            }
+
+            if (matched == pattern.length()) {
+                matched--;
+                i = j;
+
+                while (i <= j && matched >= 0) {
+                    if (word.charAt(i) == pattern.charAt(matched)) {
+                        matched--;
+                    }
+
+                    i--;
+                }
+
+                i++;
+
+                if ((j - i + 1) < len) {
+                    start = i;
+                    len = j - i + 1;
+                }
+
+                matched = 0;
+                j = i + 1;
+            } else {
+                j++;
+            }
+        }
+
+        return len == Integer.MAX_VALUE ? "" : word.substring(start, start + len);
+    }
+}
