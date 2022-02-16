@@ -1,0 +1,50 @@
+class Solution {
+    public String minWindow(String word, String pattern) {
+        Map<Character, Integer> freq = new HashMap<>();
+
+        int distinct = 0;
+        for (Character ch : pattern.toCharArray()) {
+            freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+
+            if (freq.get(ch) == 1) {
+                distinct++;
+            }
+        }
+
+        int i = 0, j = 0, start = 0, len = Integer.MAX_VALUE;
+
+        while (j < word.length()) {
+            char ch = word.charAt(j);
+            if (freq.containsKey(ch)) {
+                freq.put(ch, freq.get(ch) - 1);
+
+                if (freq.get(ch) == 0) {
+                    distinct--;
+                }
+            }
+
+            while (distinct == 0 && i <= j) {
+                ch = word.charAt(i);
+
+                if ((j - i + 1) < len) {
+                    start = i;
+                    len = (j - i + 1);
+                }
+
+                if (freq.containsKey(ch)) {
+                    freq.put(ch, freq.get(ch) + 1);
+
+                    if (freq.get(ch) == 1) {
+                        distinct++;
+                    }
+                }
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return len == Integer.MAX_VALUE ? "" : word.substring(start, start + len);
+    }
+}
