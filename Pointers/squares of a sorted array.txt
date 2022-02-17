@@ -1,0 +1,26 @@
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return new int[] {};
+        }
+
+        int[] ans = new int[nums.length];
+
+        int left = 0, right = nums.length - 1, index = right;
+
+        while (left <= right) {
+            int a = nums[left] * nums[left];
+            int b = nums[right] * nums[right];
+
+            if (a < b) {
+                ans[index--] = b;
+                right--;
+            } else {
+                ans[index--] = a;
+                left++;
+            }
+        }
+
+        return ans;
+    }
+}
