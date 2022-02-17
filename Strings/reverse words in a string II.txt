@@ -1,0 +1,32 @@
+class Solution {
+    private void swap(char[] input, int i, int j) {
+        char temp = input[i];
+        input[i] = input[j];
+        input[j] = temp;
+    }
+
+    private void reverse(char[] input, int left, int right) {
+        while (left <= right) {
+            swap(input, left, right);
+            left++;
+            right--;
+        }
+    }
+
+    public void reverseWords(char[] input) {
+        int left = 0, right = 0;
+
+        while (right < input.length) {
+            if (input[right] != ' ') {
+                right++;
+            } else {
+                reverse(input, left, right - 1);
+                right++;
+                left = right;
+            }
+        }
+
+        reverse(input, left, input.length - 1);
+        reverse(input, 0, input.length - 1);
+    }
+}
