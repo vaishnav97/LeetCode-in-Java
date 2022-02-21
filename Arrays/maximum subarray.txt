@@ -1,0 +1,30 @@
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int ans = 0, currentSum = 0, maxNegNum = nums[0];
+        for (int num : nums) {
+            if (maxNegNum < num) {
+                maxNegNum = Math.max(maxNegNum, num);
+            }
+
+            currentSum += num;
+
+            if (currentSum > ans) {
+                ans = currentSum;
+            }
+
+            if (currentSum < 0) {
+                currentSum = 0;
+            }
+        }
+
+        if (currentSum == 0 && maxNegNum < 0) {
+            return maxNegNum;
+        }
+
+        return ans;
+    }
+}
