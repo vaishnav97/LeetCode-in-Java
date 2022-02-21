@@ -1,5 +1,6 @@
 class Solution {
-    private int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    private int[] dx = { 0, 0, 1, -1 };
+    private int[] dy = { 1, -1, 0, 0 };
 
     private void markIsland(char[][] grid, int x, int y) {
         if (x < 0 || x == grid.length || y < 0 || y == grid[0].length || grid[x][y] == '0') {
@@ -8,9 +9,9 @@ class Solution {
 
         grid[x][y] = '0';
 
-        for (int[] direction : directions) {
-            int newX = x + direction[0];
-            int newY = y + direction[1];
+        for (int i = 0; i < 4; i++) {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
 
             markIsland(grid, newX, newY);
         }
