@@ -1,0 +1,43 @@
+class Solution {
+    private ListNode reverseLinkedList(ListNode head) {
+        ListNode prev = null, after = head, current = head;
+
+        while (current != null) {
+            after = current.next;
+
+            current.next = prev;
+            prev = current;
+
+            current = after;
+        }
+
+        return prev;
+    }
+
+    public int pairSum(ListNode head) {
+        ListNode prev = null, middle = head, fast = head;
+        while (fast != null && fast.next != null) {
+            prev = middle;
+            middle = middle.next;
+            fast = fast.next.next;
+        }
+
+        prev.next = null;
+
+        ListNode reverseHead = reverseLinkedList(middle);
+
+        int ans = 0;
+
+        ListNode current = head, revCurrent = reverseHead;
+
+        while (current != null && revCurrent != null) {
+            int sum = current.val + revCurrent.val;
+            ans = Math.max(ans, sum);
+
+            current = current.next;
+            revCurrent = revCurrent.next;
+        }
+
+        return ans;
+    }
+}
