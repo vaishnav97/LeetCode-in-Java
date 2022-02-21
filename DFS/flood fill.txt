@@ -1,5 +1,6 @@
 class Solution {
-    private int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    private int[] dx = { 0, 0, 1, -1 };
+    private int[] dy = { 1, -1, 0, 0 };
 
     private void markCell(int[][] image, int x, int y, int oldColor, int newColor) {
         if (x < 0 || x == image.length || y < 0 || y == image[0].length) {
@@ -14,9 +15,9 @@ class Solution {
             image[x][y] = newColor;
         }
 
-        for (int[] direction : directions) {
-            int newX = x + direction[0];
-            int newY = y + direction[1];
+        for (int i = 0; i < 4; i++) {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
 
             markCell(image, newX, newY, oldColor, newColor);
         }
