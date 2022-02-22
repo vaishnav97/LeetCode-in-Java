@@ -1,0 +1,53 @@
+class WordDistance {
+
+    private Map<String, List<Integer>> map = new HashMap<>();
+    private Map<String, Integer> cache = new HashMap<>();
+
+    public WordDistance(String[] wordsDict) {
+        for (int i = 0; i < wordsDict.length; i++) {
+            String word = wordsDict[i];
+
+            map.computeIfAbsent(word, v -> new ArrayList<>()).add(i);
+        }
+    }
+
+    public int shortest(String word1, String word2) {
+        String key1 = word1 + "::" + word2;
+        String key2 = word2 + "::" + word1;
+
+        if (cache.containsKey(key1)) {
+            return cache.get(key1);
+        }
+
+        if (cache.containsKey(key2)) {
+            return cache.get(key2);
+        }
+
+        List<Integer> index1 = map.get(word1);
+        List<Integer> index2 = map.get(word2);
+
+        int ans = Integer.MAX_VALUE, p1 = 0, p2 = 0;
+
+        while (p1 < index1.size() && p2 < index2.size()) {
+            ans = Math.min(ans, Math.abs(index1.get(p1) - index2.get(p2)));
+
+            if (index1.get(p1) < index2.get(p2)) {
+                p1++;
+            } else {
+                p2++;
+            }
+
+            if (ans == 1) {
+                cache.put(key1, ans);
+                cache.put(key2, ans);
+
+                return ans;
+            }
+        }
+
+        cache.put(key1, ans);
+        cache.put(key2, ans);
+
+        return ans;
+    }
+}
