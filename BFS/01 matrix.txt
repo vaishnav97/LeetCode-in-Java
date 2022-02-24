@@ -16,32 +16,38 @@ class Solution {
         ArrayDeque<Point> queue = new ArrayDeque<>();
 
         int row = grid.length, col = grid[0].length;
+        boolean[][] visited = new boolean[row][col];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (grid[i][j] == 0) {
                     queue.offer(new Point(i, j));
-                } else {
-                    grid[i][j] = -1;
+                    visited[i][j] = true;
                 }
             }
         }
 
+        int level = 0;
+
         while (!queue.isEmpty()) {
-            Point node = queue.poll();
+            level++;
 
-            for (int i = 0; i < 4; i++) {
-                int newX = node.x + dx[i];
-                int newY = node.y + dy[i];
+            int n = queue.size();
+            while (n-- > 0) {
+                Point node = queue.poll();
 
-                if (newX < 0 || newX == row || newY < 0 || newY == col) {
-                    continue;
-                }
+                for (int i = 0; i < 4; i++) {
+                    int x = node.x + dx[i];
+                    int y = node.y + dy[i];
 
-                if (grid[newX][newY] == -1) {
-                    grid[newX][newY] = 1 + grid[node.x][node.y];
+                    if (x < 0 || x == row || y < 0 || y == col || visited[x][y] == true) {
+                        continue;
+                    }
 
-                    queue.offer(new Point(newX, newY));
+                    grid[x][y] = level;
+                    visited[x][y] = true;
+
+                    queue.offer(new Point(x, y));
                 }
             }
         }
