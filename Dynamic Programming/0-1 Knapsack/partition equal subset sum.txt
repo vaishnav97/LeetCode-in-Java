@@ -1,3 +1,6 @@
+// question says that only positive integers only
+// thats why j starts from 1
+
 class Solution {
     private boolean subsetSum(int[] nums, int sum) {
         int n = nums.length;
