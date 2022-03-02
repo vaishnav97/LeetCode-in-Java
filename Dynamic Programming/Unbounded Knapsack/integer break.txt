@@ -1,3 +1,41 @@
+Memoization:
+
+class Solution {
+    private Integer[][] memo = null;
+
+    private int helper(int num, int weight) {
+        if (weight == 0 && num == 0) {
+            return memo[num][weight] = 0;
+        }
+
+        if (weight == 0) {
+            return memo[num][weight] = 1;
+        }
+
+        if (num == 0) {
+            return memo[num][weight] = 0;
+        }
+
+        if (memo[num][weight] != null) {
+            return memo[num][weight];
+        }
+
+        if (num <= weight) {
+            return memo[num][weight] = Math.max(num * helper(num, weight - num), helper(num - 1, weight));
+        } else {
+            return memo[num][weight] = helper(num - 1, weight);
+        }
+    }
+
+    public int integerBreak(int n) {
+        memo = new Integer[n][n + 1];
+        return helper(n - 1, n);
+    }
+}
+
+
+DP:
+
 class Solution {
     public int integerBreak(int n) {
         int[][] dp = new int[n][n + 1];
