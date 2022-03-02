@@ -1,0 +1,27 @@
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        int[] dp = new int[30];
+
+        Set<Integer> travelDay = new HashSet<>();
+        for (int day : days) {
+            travelDay.add(day);
+        }
+
+        int firstTravelDay = days[0];
+        int lastTravelDay = days[days.length - 1];
+
+        for (int i = firstTravelDay; i <= lastTravelDay; i++) {
+            if (travelDay.contains(i)) {
+                int oneDayPlan = dp[(i - 1) % 30] + costs[0];
+                int sevenDayPlan = dp[(Math.max(0, i - 7)) % 30] + costs[1];
+                int thirtyDayPlan = dp[(Math.max(0, i - 30)) % 30] + costs[2];
+
+                dp[i % 30] = Math.min(oneDayPlan, Math.min(sevenDayPlan, thirtyDayPlan));
+            } else {
+                dp[i % 30] = dp[(i - 1) % 30];
+            }
+        }
+
+        return dp[lastTravelDay % 30];
+    }
+}
