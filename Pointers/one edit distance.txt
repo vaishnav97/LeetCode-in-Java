@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isOneEditDistance(String word1, String word2) {
+        int n = word1.length(), m = word2.length();
+
+        if (n == 0 && m == 0) {
+            return false;
+        }
+
+        if (Math.abs(n - m) > 1) {
+            return false;
+        }
+
+        for (int i = 0; i < Math.min(n, m); i++) {
+            if (word1.charAt(i) != word2.charAt(i)) {
+                if (n == m) {
+                    return word1.substring(i + 1).equals(word2.substring(i + 1));
+                } else if (n < m) {
+                    return word1.substring(i).equals(word2.substring(i + 1));
+                } else {
+                    return word1.substring(i + 1).equals(word2.substring(i));
+                }
+            }
+        }
+
+        return Math.abs(n - m) == 1;
+    }
+}
