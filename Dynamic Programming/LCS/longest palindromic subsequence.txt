@@ -8,10 +8,16 @@ class Solution {
             dp[i][i] = 1;
         }
 
-        for (int left = n - 2; left >= 0; left--) {
-            for (int right = left + 1; right < n; right++) {
+        for (int len = 2; len <= n; len++) {
+            for (int left = 0; left <= n - len; left++) {
+                int right = left + len - 1;
+
                 if (input.charAt(left) == input.charAt(right)) {
-                    dp[left][right] = 2 + dp[left + 1][right - 1];
+                    if (len == 2) {
+                        dp[left][right] = 2;
+                    } else {
+                        dp[left][right] = dp[left + 1][right - 1] + 2;
+                    }
                 } else {
                     dp[left][right] = Math.max(dp[left + 1][right], dp[left][right - 1]);
                 }
