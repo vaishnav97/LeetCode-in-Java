@@ -1,3 +1,48 @@
+Binary Search Solution:
+
+class Solution {
+    private int binarySearch(List<Integer> lis, int target) {
+        int low = 0, high = lis.size() - 1, ans = Integer.MAX_VALUE;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (lis.get(mid) >= target) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return 1;
+        }
+
+        List<Integer> lis = new ArrayList<>();
+        lis.add(nums[0]);
+
+        for (int i = 1; i < n; i++) {
+            int index = binarySearch(lis, nums[i]);
+
+            if (index == -1) {
+                lis.add(nums[i]);
+            } else {
+                lis.set(index, nums[i]);
+            }
+        }
+
+        return lis.size();
+    }
+}
+
+DP Solution:
+
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length, ans = 0;
