@@ -1,0 +1,46 @@
+class Solution {
+    private int binarySearch(List<int[]> lis, int[] target) {
+        int low = 0, high = lis.size() - 1, ans = Integer.MAX_VALUE;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (lis.get(mid)[1] >= target[0]) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+    public int findLongestChain(int[][] pairs) {
+        int n = pairs.length;
+        if (n == 1) {
+            return 1;
+        }
+
+        final Comparator<int[]> myComparator = new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return Integer.compare(a[1], b[1]);
+            }
+        };
+
+        Arrays.sort(pairs, myComparator);
+
+        List<int[]> lis = new ArrayList<>();
+        lis.add(pairs[0]);
+
+        for (int i = 1; i < n; i++) {
+            int index = binarySearch(lis, pairs[i]);
+
+            if (index == -1) {
+                lis.add(pairs[i]);
+            }
+        }
+
+        return lis.size();
+    }
+}
