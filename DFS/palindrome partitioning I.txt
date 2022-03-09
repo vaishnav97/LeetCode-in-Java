@@ -1,0 +1,59 @@
+class Solution {
+    private Boolean[][] memo = null;
+
+    public List<List<String>> ans = null;
+
+    private boolean isPalindrome(String input, int left, int right) {
+        if (memo[left][right] != null) {
+            return memo[left][right];
+        }
+
+        int i = left, j = right;
+
+        while (i <= j) {
+            if (input.charAt(i) != input.charAt(j)) {
+                return memo[left][right] = false;
+            }
+
+            i++;
+            j--;
+        }
+
+        return memo[left][right] = true;
+    }
+
+    private void helper(List<String> path, String input, int n, int index) {
+        if (index == n) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = index; i < n; i++) {
+            if (isPalindrome(input, index, i)) {
+                path.add(input.substring(index, i + 1));
+
+                helper(path, input, n, i + 1);
+
+                if (path.size() > 0) {
+                    path.remove(path.size() - 1);
+                }
+            }
+        }
+    }
+
+    public List<List<String>> partition(String input) {
+        int n = input.length();
+
+        ans = new ArrayList<>();
+
+        memo = new Boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            memo[i][i] = true;
+        }
+
+        List<String> path = new ArrayList<>();
+
+        helper(path, input, n, 0);
+        return ans;
+    }
+}
