@@ -1,0 +1,51 @@
+class Solution {
+    private Integer[][] memo = null;
+
+    private boolean isPalindrome(String input, int left, int right) {
+        while (left <= right) {
+            if (input.charAt(left) != input.charAt(right)) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    private int helper(String input, int left, int right) {
+        if (memo[left][right] != null) {
+            return memo[left][right];
+        }
+
+        if (isPalindrome(input, left, right)) {
+            return 0;
+        }
+
+        int ans = Integer.MAX_VALUE;
+
+        for (int k = left; k < right; k++) {
+            if (isPalindrome(input, left, k)) {
+                int res = 1 + helper(input, k + 1, right);
+
+                ans = Math.min(ans, res);
+
+                memo[left][right] = ans;
+            }
+        }
+
+        return ans;
+    }
+
+    public int minCut(String input) {
+        int n = input.length();
+        if (n <= 1) {
+            return 0;
+        }
+
+        memo = new Integer[n][n];
+
+        return helper(input, 0, n - 1);
+    }
+}
