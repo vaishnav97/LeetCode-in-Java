@@ -1,0 +1,39 @@
+class Solution {
+    private int helper(int[] nums, int[] memo, int startIndex, int endIndex) {
+        if (startIndex == endIndex) {
+            return nums[startIndex];
+        }
+
+        if (startIndex < endIndex) {
+            return 0;
+        }
+
+        if (memo[startIndex] != -1) {
+            return memo[startIndex];
+        }
+
+        int op1 = helper(nums, memo, startIndex - 1, endIndex);
+        int op2 = helper(nums, memo, startIndex - 2, endIndex) + nums[startIndex];
+
+        return memo[startIndex] = Math.max(op1, op2);
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+
+        if (n == 1) {
+            return nums[0];
+        }
+
+        int[] memo = new int[n];
+        Arrays.fill(memo, -1);
+
+        int op1 = helper(nums, memo, n - 1, 1);
+
+        Arrays.fill(memo, -1);
+
+        int op2 = helper(nums, memo, n - 2, 0);
+
+        return Math.max(op1, op2);
+    }
+}
