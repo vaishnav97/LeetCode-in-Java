@@ -1,0 +1,25 @@
+class Solution {
+    private int helper(int[] nums, int[] memo, int index) {
+        if (index < 0) {
+            return 0;
+        }
+
+        if (memo[index] != -1) {
+            return memo[index];
+        }
+
+        int op1 = helper(nums, memo, index - 2) + nums[index];
+        int op2 = helper(nums, memo, index - 1);
+
+        return memo[index] = Math.max(op1, op2);
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+
+        int[] memo = new int[n];
+        Arrays.fill(memo, -1);
+
+        return helper(nums, memo, n - 1);
+    }
+}
