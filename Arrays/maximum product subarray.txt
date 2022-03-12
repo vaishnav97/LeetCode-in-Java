@@ -1,0 +1,23 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+
+        if (n == 1) {
+            return nums[0];
+        }
+
+        int maxProd = nums[0], minProd = nums[0], ans = nums[0];
+        for (int i = 1; i < n; i++) {
+            int op1 = nums[i];
+            int op2 = nums[i] * maxProd;
+            int op3 = nums[i] * minProd;
+
+            maxProd = Math.max(op1, Math.max(op2, op3));
+            minProd = Math.min(op1, Math.min(op2, op3));
+
+            ans = Math.max(ans, maxProd);
+        }
+
+        return ans;
+    }
+}
