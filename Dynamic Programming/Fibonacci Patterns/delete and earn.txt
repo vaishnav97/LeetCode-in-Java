@@ -1,0 +1,29 @@
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int n = nums.length;
+
+        if (n == 1) {
+            return nums[0];
+        }
+
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        int maxVal = nums[0];
+
+        for (int num : nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+
+            maxVal = Math.max(maxVal, num);
+        }
+
+        int[] dp = new int[maxVal + 1];
+        dp[0] = 0;
+        dp[1] = freq.containsKey(1) ? freq.get(1) : 0;
+
+        for (int i = 2; i <= maxVal; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + (freq.containsKey(i) ? freq.get(i) * i : 0));
+        }
+
+        return dp[maxVal];
+    }
+}
