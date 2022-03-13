@@ -1,3 +1,37 @@
+Include and Exclude:
+
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+
+        int maxVal = nums[0];
+
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int num : nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+
+            maxVal = Math.max(maxVal, num);
+        }
+
+        int include = freq.getOrDefault(0, 0), exclude = 0;
+
+        for (int i = 1; i <= maxVal; i++) {
+            int newInclude = exclude + freq.getOrDefault(i, 0) * i;
+            int newExclude = Math.max(include, exclude);
+
+            include = newInclude;
+            exclude = newExclude;
+        }
+
+        return Math.max(include, exclude);
+    }
+}
+
+DP:
+
 class Solution {
     public int deleteAndEarn(int[] nums) {
         int n = nums.length;
