@@ -1,0 +1,44 @@
+class Solution {
+    public int minCostII(int[][] costs) {
+        int n = costs.length, k = costs[0].length;
+
+        int[][] dp = new int[n][k];
+
+        int firstMinimum = Integer.MAX_VALUE, secondMinimum = Integer.MAX_VALUE;
+
+        for (int i = 0; i < k; i++) {
+            dp[0][i] = costs[0][i];
+
+            if (costs[0][i] <= firstMinimum) {
+                secondMinimum = firstMinimum;
+                firstMinimum = costs[0][i];
+            } else if (costs[0][i] <= secondMinimum) {
+                secondMinimum = costs[0][i];
+            }
+        }
+
+        for (int i = 1; i < n; i++) {
+            int newMin = Integer.MAX_VALUE, newSecondMin = Integer.MAX_VALUE;
+
+            for (int j = 0; j < k; j++) {
+                if (firstMinimum == dp[i - 1][j]) {
+                    dp[i][j] = costs[i][j] + secondMinimum;
+                } else {
+                    dp[i][j] = costs[i][j] + firstMinimum;
+                }
+
+                if (dp[i][j] <= newMin) {
+                    newSecondMin = newMin;
+                    newMin = dp[i][j];
+                } else if (dp[i][j] <= newSecondMin) {
+                    newSecondMin = dp[i][j];
+                }
+            }
+
+            firstMinimum = newMin;
+            secondMinimum = newSecondMin;
+        }
+
+        return firstMinimum;
+    }
+}
