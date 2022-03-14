@@ -1,0 +1,18 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+
+        int buyDay = 0, sellDay = 0, profit = 0;
+        for (int i = 1; i < n; i++) {
+            if (prices[i] >= prices[i - 1]) {
+                sellDay++;
+            } else {
+                profit += prices[sellDay] - prices[buyDay];
+                buyDay = sellDay = i;
+            }
+        }
+
+        profit += prices[sellDay] - prices[buyDay];
+        return profit;
+    }
+}
