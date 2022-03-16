@@ -1,0 +1,57 @@
+State Machine:
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+
+        int noStock[] = new int[n], inHand[] = new int[n], sold[] = new int[n];
+
+        noStock[0] = 0;
+        inHand[0] = -prices[0];
+        sold[0] = 0;
+
+        for (int i = 1; i < n; i++) {
+            noStock[i] = Math.max(noStock[i - 1], sold[i - 1]);
+            inHand[i] = Math.max(inHand[i - 1], noStock[i - 1] - prices[i]);
+            sold[i] = inHand[i - 1] + prices[i];
+        }
+
+        return Math.max(noStock[n - 1], sold[n - 1]);
+    }
+}
+
+Recursion:
+
+class Solution {
+    private int helper(int[] prices, int[] memo, int index, int n) {
+        if (index >= n) {
+            return 0;
+        }
+
+        if (memo[index] != -1) {
+            return memo[index];
+        }
+
+        // buy
+        int maxVal = 0;
+        for (int i = index + 1; i < n; i++) {
+            if (prices[index] < prices[i]) {
+                maxVal = Math.max(maxVal, prices[i] - prices[index] + helper(prices, memo, i + 2, n));
+            }
+        }
+
+        // not buying
+        maxVal = Math.max(maxVal, helper(prices, memo, index + 1, n));
+
+        return memo[index] = maxVal;
+    }
+
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+
+        int[] memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+
+        return helper(prices, memo, 0, n);
+    }
+}
