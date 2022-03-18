@@ -1,0 +1,35 @@
+class Solution {
+    private double[][] memo = null;
+
+    private double helper(double[] prob, int index, int target) {
+        if (memo[index][target] != -1) {
+            return memo[index][target];
+        }
+
+        double ans = 1;
+        if (target == 0) {
+            for (int i = index; i < prob.length; i++) {
+                ans *= (1 - prob[i]);
+            }
+        } else if (index == prob.length) {
+            return 0;
+        } else {
+            if (target > 0) {
+                ans = prob[index] * helper(prob, index + 1, target - 1);
+            }
+            ans += (1 - prob[index]) * helper(prob, index + 1, target);
+        }
+
+        return memo[index][target] = ans;
+    }
+
+    public double probabilityOfHeads(double[] prob, int target) {
+        memo = new double[prob.length + 1][target + 1];
+
+        for (double[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        return helper(prob, 0, target);
+    }
+}
