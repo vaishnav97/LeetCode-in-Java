@@ -1,0 +1,61 @@
+class Point {
+    int x, y, dirX, dirY;
+
+    Point(int x, int y, int dirX, int dirY) {
+        this.x = x;
+        this.y = y;
+        this.dirX = dirX;
+        this.dirY = dirY;
+    }
+
+}
+
+class Solution {
+    private int[] dx = { 0, 0, 1, -1 };
+    private int[] dy = { 1, -1, 0, 0 };
+
+    public int maxKilledEnemies(char[][] grid) {
+        int row = grid.length, col = grid[0].length;
+
+        int[][] dist = new int[row][col];
+
+        ArrayDeque<Point> queue = new ArrayDeque<>();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == 'E') {
+
+                    for (int k = 0; k < dx.length; k++) {
+                        queue.offer(new Point(i, j, dx[k], dy[k]));
+                    }
+                }
+            }
+        }
+
+        int ans = 0;
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+
+            for (int i = 0; i < n; i++) {
+                Point cell = queue.poll();
+
+                int newX = cell.x + cell.dirX;
+                int newY = cell.y + cell.dirY;
+
+                if (newX >= 0 && newX < row && newY >= 0 && newY < col && grid[newX][newY] != 'W') {
+                    dist[newX][newY] += 1;
+
+                    if (grid[newX][newY] == '0') {
+                        ans = Math.max(ans, dist[newX][newY]);
+                    }
+
+                    queue.offer(new Point(newX, newY, cell.dirX, cell.dirY));
+                }
+            }
+        }
+
+        System.out.println(Arrays.deepToString(dist));
+
+        return ans;
+    }
+}
