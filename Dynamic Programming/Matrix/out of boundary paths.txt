@@ -1,0 +1,43 @@
+import java.util.*;
+
+class Solution {
+    private int[] dx = { 0, 0, -1, 1 };
+    private int[] dy = { 1, -1, 0, 0 };
+
+    private int MOD = 1000_000_007;
+
+    private Map<String, Long> cache = null;
+
+    private long dfs(int m, int n, int maxMove, int x, int y) {
+        if (x < 0 || x >= m || y < 0 || y >= n) {
+            return 1l;
+        }
+
+        if (maxMove == 0) {
+            return 0;
+        }
+
+        String key = maxMove + "::" + x + "::" + y;
+        if (cache.get(key) != null) {
+            return cache.get(key);
+        }
+
+        long ans = 0;
+
+        for (int i = 0; i < dx.length; i++) {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
+
+            ans += (dfs(m, n, maxMove - 1, newX, newY)) % MOD;
+            ans = (ans + MOD) % MOD;
+        }
+
+        cache.put(key, ans);
+        return ans;
+    }
+
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        cache = new HashMap<>();
+        return (int) dfs(m, n, maxMove, startRow, startColumn);
+    }
+}
