@@ -1,0 +1,55 @@
+class Solution {
+    private Boolean[][] memo = null;
+
+    private boolean helper(String input, Set<String> words, int left, int right) {
+        if (left > right) {
+            return false;
+        }
+
+        if (memo[left][right] != null) {
+            return memo[left][right];
+        }
+
+        if (words.contains(input.substring(left, right + 1))) {
+            return memo[left][right] = true;
+        }
+
+        boolean ans = false;
+
+        for (int k = left; k <= right; k++) {
+            if (words.contains(input.substring(left, k + 1))) {
+                boolean leftAns = false, rightAns = false;
+
+                if (memo[left][k] != null) {
+                    leftAns = memo[left][k];
+                } else {
+                    memo[left][k] = leftAns = helper(input, words, left, k);
+                }
+
+                if (memo[k + 1][right] != null) {
+                    rightAns = memo[k + 1][right];
+                } else {
+                    memo[k + 1][right] = rightAns = helper(input, words, k + 1, right);
+                }
+
+                if (leftAns && rightAns) {
+                    ans = true;
+                }
+            }
+        }
+
+        return memo[left][right] = ans;
+    }
+
+    public boolean wordBreak(String input, List<String> wordDict) {
+        Set<String> words = new HashSet<>();
+        for (String word : wordDict) {
+            words.add(word);
+        }
+
+        int n = input.length();
+        memo = new Boolean[n + 1][n + 1];
+
+        return helper(input, words, 0, n - 1);
+    }
+}
