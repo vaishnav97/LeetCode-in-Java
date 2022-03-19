@@ -3,10 +3,6 @@ class Solution {
     private int[] dy = { 1, -1, 0, 0 };
 
     private int dfs(int[][] matrix, int[][] dp, int x, int y) {
-        if (x < 0 || x >= matrix.length || y < 0 || y >= matrix[0].length) {
-            return 0;
-        }
-
         if (dp[x][y] != 0) {
             return dp[x][y];
         }
