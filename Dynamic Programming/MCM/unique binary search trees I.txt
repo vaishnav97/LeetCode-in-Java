@@ -1,0 +1,28 @@
+class Solution {
+    private int[] memo = null;
+
+    private int helper(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+
+        if (memo[n] != -1) {
+            return memo[n];
+        }
+
+        int ans = 0;
+
+        for (int i = 1; i <= n; i++) {
+            ans += helper(i - 1) * helper(n - i);
+        }
+
+        return memo[n] = ans;
+    }
+
+    public int numTrees(int n) {
+        memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+
+        return helper(n);
+    }
+}
