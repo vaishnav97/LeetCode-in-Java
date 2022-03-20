@@ -1,0 +1,49 @@
+class Solution {
+    private int[][] memo = null;
+
+    private int helper(List<Integer> nums, int left, int right) {
+        if (memo[left][right] != -1) {
+            return memo[left][right];
+        }
+
+        if (left == right) {
+            return memo[left][right] = 0;
+        }
+
+        int ans = Integer.MAX_VALUE;
+        for (int k = left; k < right; k++) {
+            if (memo[left][k] == -1) {
+                memo[left][k] = helper(nums, left, k);
+            }
+
+            if (memo[k + 1][right] == -1) {
+                memo[k + 1][right] = helper(nums, k + 1, right);
+            }
+
+            int leftSubMax = Collections.max(nums.subList(left, k + 1));
+            int rightSubMax = Collections.max(nums.subList(k + 1, right + 1));
+
+            int exp = memo[left][k] + memo[k + 1][right] + (leftSubMax * rightSubMax);
+
+            ans = Math.min(ans, exp);
+        }
+
+        return memo[left][right] = ans;
+    }
+
+    public int mctFromLeafValues(int[] arr) {
+        int n = arr.length;
+
+        memo = new int[n + 1][n + 1];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        List<Integer> nums = new ArrayList<>();
+        for (int num : arr) {
+            nums.add(num);
+        }
+
+        return helper(nums, 0, n - 1);
+    }
+}
