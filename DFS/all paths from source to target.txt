@@ -1,0 +1,36 @@
+class Solution {
+    private List<List<Integer>> ans = null;
+    private List<Integer> path = null;
+
+    private void dfs(int[][] edges, int src, int dest) {
+        if (src == dest) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int neighbour : edges[src]) {
+            path.add(neighbour);
+
+            dfs(edges, neighbour, dest);
+
+            if (path.size() > 0) {
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+
+    public List<List<Integer>> allPathsSourceTarget(int[][] edges) {
+        ans = new ArrayList<>();
+        int n = edges.length;
+
+        if (n == 0) {
+            return ans;
+        }
+
+        path = new ArrayList<>();
+        path.add(0);
+
+        dfs(edges, 0, n - 1);
+        return ans;
+    }
+}
