@@ -1,9 +1,9 @@
 class Solution {
-    private int[] dx = { 0, 0, 1, -1 };
+    private int[] dx = { 0, 0, -1, 1 };
     private int[] dy = { 1, -1, 0, 0 };
 
     private void markCell(int[][] image, int x, int y, int oldColor, int newColor) {
-        if (x < 0 || x == image.length || y < 0 || y == image[0].length) {
+        if (x < 0 || x >= image.length || y < 0 || y >= image[0].length) {
             return;
         }
 
@@ -15,14 +15,9 @@ class Solution {
             image[x][y] = newColor;
         }
 
-        for (int i = 0; i < 4; i++) {
-            int newX = x + dx[i];
-            int newY = y + dy[i];
-
-            markCell(image, newX, newY, oldColor, newColor);
+        for (int i = 0; i < dx.length; i++) {
+            markCell(image, x + dx[i], y + dy[i], oldColor, newColor);
         }
-
-        return;
     }
 
     public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
