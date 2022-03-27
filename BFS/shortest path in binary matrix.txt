@@ -1,0 +1,57 @@
+class Point {
+    int x, y;
+
+    Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class Solution {
+    private int[] dx = { 0, 0, -1, 1, 1, 1, -1, -1 };
+    private int[] dy = { 1, -1, 0, 0, -1, 1, 1, -1 };
+
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int row = grid.length, col = grid[0].length;
+
+        if (grid[0][0] == 1 || grid[row - 1][col - 1] == 1) {
+            return -1;
+        }
+
+        ArrayDeque<Point> queue = new ArrayDeque<>();
+
+        queue.offer(new Point(0, 0));
+        grid[0][0] = 1;
+
+        int ans = 1;
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+
+            while (n-- > 0) {
+                Point current = queue.poll();
+
+                if (current.x == row - 1 && current.y == col - 1) {
+                    return ans;
+                }
+
+                for (int i = 0; i < dx.length; i++) {
+                    int x = current.x + dx[i];
+                    int y = current.y + dy[i];
+
+                    if (x < 0 || x >= row || y < 0 || y >= col || grid[x][y] == 1) {
+                        continue;
+                    }
+
+                    queue.offer(new Point(x, y));
+                    grid[x][y] = 1;
+                }
+            }
+
+            ans++;
+        }
+
+        return -1;
+    }
+
+}
