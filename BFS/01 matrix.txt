@@ -1,6 +1,5 @@
 class Point {
-    int x;
-    int y;
+    int x, y;
 
     Point(int x, int y) {
         this.x = x;
@@ -9,20 +8,22 @@ class Point {
 }
 
 class Solution {
-    private int[] dx = { 0, 0, 1, -1 };
+    private int[] dx = { 0, 0, -1, 1 };
     private int[] dy = { 1, -1, 0, 0 };
 
     public int[][] updateMatrix(int[][] grid) {
-        ArrayDeque<Point> queue = new ArrayDeque<>();
-
         int row = grid.length, col = grid[0].length;
+
         boolean[][] visited = new boolean[row][col];
+
+        ArrayDeque<Point> queue = new ArrayDeque<>();
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (grid[i][j] == 0) {
-                    queue.offer(new Point(i, j));
                     visited[i][j] = true;
+
+                    queue.offer(new Point(i, j));
                 }
             }
         }
@@ -34,13 +35,13 @@ class Solution {
 
             int n = queue.size();
             while (n-- > 0) {
-                Point node = queue.poll();
+                Point current = queue.poll();
 
-                for (int i = 0; i < 4; i++) {
-                    int x = node.x + dx[i];
-                    int y = node.y + dy[i];
+                for (int i = 0; i < dx.length; i++) {
+                    int x = current.x + dx[i];
+                    int y = current.y + dy[i];
 
-                    if (x < 0 || x == row || y < 0 || y == col || visited[x][y] == true) {
+                    if (x < 0 || x >= row || y < 0 || y >= col || visited[x][y] == true) {
                         continue;
                     }
 
@@ -54,4 +55,5 @@ class Solution {
 
         return grid;
     }
+
 }
