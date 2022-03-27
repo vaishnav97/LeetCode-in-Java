@@ -1,0 +1,85 @@
+class Point {
+    int x, y;
+
+    Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class Solution {
+    private int[] dx = { 0, 0, -1, 1 };
+    private int[] dy = { 1, -1, 0, 0 };
+
+    private void markIsland(int[][] grid, int x, int y, boolean[][] visited, ArrayDeque<Point> queue) {
+        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == 0) {
+            return;
+        }
+
+        if (visited[x][y] == true) {
+            return;
+        }
+
+        visited[x][y] = true;
+        queue.offer(new Point(x, y));
+
+        for (int i = 0; i < dx.length; i++) {
+            markIsland(grid, x + dx[i], y + dy[i], visited, queue);
+        }
+    }
+
+    public int shortestBridge(int[][] grid) {
+        int row = grid.length, col = grid[0].length;
+
+        boolean[][] visited = new boolean[row][col];
+
+        ArrayDeque<Point> queue = new ArrayDeque<>();
+
+        boolean found = false;
+        for (int i = 0; i < row; i++) {
+            if (found == true) {
+                break;
+            }
+
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == 1) {
+                    found = true;
+                    markIsland(grid, i, j, visited, queue);
+
+                    break;
+                }
+            }
+        }
+
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+
+            while (n-- > 0) {
+                Point current = queue.poll();
+
+                for (int i = 0; i < dx.length; i++) {
+                    int x = current.x + dx[i];
+                    int y = current.y + dy[i];
+
+                    if (x < 0 || x >= row || y < 0 || y >= col || visited[x][y] == true) {
+                        continue;
+                    }
+
+                    if (grid[x][y] == 1) {
+                        return level;
+                    }
+
+                    visited[x][y] = true;
+                    queue.offer(new Point(x, y));
+                }
+            }
+
+            level++;
+        }
+
+        return level;
+    }
+
+}
