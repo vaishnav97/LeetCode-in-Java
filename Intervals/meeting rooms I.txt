@@ -1,0 +1,27 @@
+class Solution {
+    public boolean canAttendMeetings(int[][] intervals) {
+        final Comparator<int[]> myComparator = new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                if (a[0] == b[0]) {
+                    return Integer.compare(a[1], b[1]);
+                }
+
+                return Integer.compare(a[0], b[0]);
+            }
+        };
+
+        Arrays.sort(intervals, myComparator);
+
+        int i = 0, j = 1;
+        while (j < intervals.length) {
+            if (intervals[i][1] > intervals[j][0]) {
+                return false;
+            }
+
+            i++;
+            j++;
+        }
+
+        return true;
+    }
+}
