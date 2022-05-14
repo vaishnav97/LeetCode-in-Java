@@ -1,0 +1,117 @@
+class LinkedListNode {
+    int key;
+    int value;
+
+    LinkedListNode prev;
+    LinkedListNode next;
+
+    LinkedListNode(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+
+class DoubleLinkedList {
+    LinkedListNode head;
+    LinkedListNode tail;
+
+    DoubleLinkedList() {
+        head = new LinkedListNode(-1, -1);
+        tail = new LinkedListNode(-1, -1);
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    private void addAfterHead(LinkedListNode node) {
+        LinkedListNode nodeAfterHead = head.next;
+
+        head.next = node;
+
+        node.prev = head;
+        node.next = nodeAfterHead;
+
+        nodeAfterHead.prev = node;
+    }
+
+    public void addToStart(int key, int value) {
+        LinkedListNode node = new LinkedListNode(key, value);
+        addAfterHead(node);
+    }
+
+    public void moveToStart(LinkedListNode node) {
+        LinkedListNode nodePrev = node.prev;
+        LinkedListNode nodeNext = node.next;
+
+        nodePrev.next = nodeNext;
+        nodeNext.prev = nodePrev;
+
+        addAfterHead(node);
+    }
+
+    public int getLastLinkedListNodeKey() {
+        LinkedListNode node = tail.prev;
+
+        node.prev.next = tail;
+        tail.prev = node.prev;
+
+        int key = node.key;
+        node = null;
+
+        return key;
+    }
+}
+
+
+class LRUCache {
+
+    private int capacity;
+    private DoubleLinkedList cache;
+    private Map<Integer, LinkedListNode> entries;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.entries = new HashMap<>();
+        this.cache = new DoubleLinkedList();
+    }
+
+    private LinkedListNode getLinkedListNode(int key) {
+        if (this.entries.containsKey(key)) {
+            LinkedListNode node = this.entries.get(key);
+
+            this.cache.moveToStart(node);
+            return node;
+        }
+
+        return null;
+    }
+
+    public int get(int key) {
+        LinkedListNode node = this.getLinkedListNode(key);
+
+        if (node == null) {
+            return -1;
+        }
+
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        LinkedListNode node = this.getLinkedListNode(key);
+
+        if (node != null) {
+            node.value = value;
+            return;
+        }
+
+        int currentSize = this.entries.size();
+        if (currentSize == this.capacity) {
+            int keyToBeDeleted = this.cache.getLastLinkedListNodeKey();
+            this.entries.remove(keyToBeDeleted);
+        }
+
+        this.cache.addToStart(key, value);
+        this.entries.put(key, this.cache.head.next);
+    }
+}
