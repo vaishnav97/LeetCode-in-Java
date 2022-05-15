@@ -1,3 +1,35 @@
+TC: O(n)
+
+class Solution {
+    private int LIMIT = 1000000;
+
+    public int minMeetingRooms(int[][] intervals) {
+        int[] arr = new int[LIMIT + 1];
+
+        int minPoint = 0, maxPoint = 0;
+
+        for (int[] interval : intervals) {
+            arr[interval[0]]++;
+            arr[interval[1]]--;
+
+            minPoint = Math.min(minPoint, interval[0]);
+            maxPoint = Math.max(maxPoint, interval[1]);
+        }
+
+        int count = 0, ans = 0;
+        for (int i = minPoint; i <= maxPoint; i++) {
+            if (arr[i] != 0) {
+                count += arr[i];
+                ans = Math.max(ans, count);
+            }
+        }
+
+        return ans;
+    }
+}
+
+TC: O(nlogn)
+
 class Solution {
     public int minMeetingRooms(int[][] intervals) {
         List<Integer> start = new ArrayList<>();
