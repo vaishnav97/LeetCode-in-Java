@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isValid(String input) {
+        int len = input.length();
+        if (len == 1) {
+            return false;
+        }
+
+        Map<Character, Character> brackets = new HashMap<>();
+        brackets.put('(', ')');
+        brackets.put('[', ']');
+        brackets.put('{', '}');
+
+        ArrayDeque<Character> stack = new ArrayDeque<>();
+        for (char ch : input.toCharArray()) {
+            if (brackets.containsKey(ch)) {
+                stack.push(brackets.get(ch));
+            } else {
+                if (stack.isEmpty() || ch != stack.peek()) {
+                    return false;
+                }
+
+                stack.pop();
+            }
+        }
+
+        return stack.isEmpty();
+    }
+}
