@@ -1,0 +1,33 @@
+class Solution {
+    private enum ROMAN {
+        I(1), V(5), X(10), L(50), C(100), D(500), M(1000);
+
+        private int val;
+
+        ROMAN(int val) {
+            this.val = val;
+        }
+
+        public int getValue() {
+            return this.val;
+        }
+    }
+
+    public int romanToInt(String input) {
+        int ans = 0, n = input.length();
+
+        for (int i = 0; i < n - 1; i++) {
+            int first = ROMAN.valueOf(String.valueOf(input.charAt(i))).getValue();
+            int second = ROMAN.valueOf(String.valueOf(input.charAt(i + 1))).getValue();
+
+            if (first < second) {
+                ans -= first;
+            } else {
+                ans += first;
+            }
+        }
+
+        ans += ROMAN.valueOf(String.valueOf(input.charAt(n - 1))).getValue();
+        return ans;
+    }
+}
