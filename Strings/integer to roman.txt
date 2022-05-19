@@ -1,0 +1,40 @@
+class Solution {
+    private enum RomanNumeral {
+        M("M", 1000), CM("CM", 900), D("D", 500), CD("CD", 400), C("C", 100), XC("XC", 90), L("L",
+                50), XL("XL", 40), X("X", 10), IX("IX", 9), V("V", 5), IV("IV", 4), I("I", 1);
+
+        private final String symbol;
+        private final int value;
+
+        RomanNumeral(String symbol, int value) {
+            this.symbol = symbol;
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+
+        public String getSymbol() {
+            return this.symbol;
+        }
+    }
+
+    public String intToRoman(int num) {
+        StringBuilder ans = new StringBuilder();
+
+        for (RomanNumeral roman : RomanNumeral.values()) {
+            if (num >= roman.getValue()) {
+                int times = num / roman.getValue();
+
+                for (int i = 0; i < times; i++) {
+                    ans.append(roman.getSymbol());
+                }
+
+                num -= roman.getValue() * times;
+            }
+        }
+
+        return ans.toString();
+    }
+}
