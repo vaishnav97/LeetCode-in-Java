@@ -1,0 +1,76 @@
+class Solution {
+    private int getPrecedence(char ch) {
+        if (ch == '*' || ch == '/') {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private int performOperation(int num1, int num2, char op) {
+        int ans = 0;
+
+        switch (op) {
+            case '+':
+                ans = num1 + num2;
+                break;
+            case '-':
+                ans = num1 - num2;
+                break;
+            case '*':
+                ans = num1 * num2;
+                break;
+            case '/':
+                ans = num1 / num2;
+                break;
+        }
+
+        return ans;
+    }
+
+    public int calculate(String input) {
+        ArrayDeque<Integer> operand = new ArrayDeque<>();
+        ArrayDeque<Character> operator = new ArrayDeque<>();
+
+        int index = 0;
+        while (index < input.length()) {
+            char ch = input.charAt(index);
+
+            if (Character.isDigit(ch)) {
+                int val = 0;
+
+                while (index < input.length() && Character.isDigit(input.charAt(index))) {
+                    val = val * 10 + (input.charAt(index) - '0');
+                    index++;
+                }
+
+                index--;
+                operand.push(val);
+            } else if (ch != ' ') {
+                int precedence = getPrecedence(ch);
+
+                while (!operator.isEmpty() && getPrecedence(operator.peek()) >= precedence) {
+                    char op = operator.pop();
+                    int a = operand.pop();
+                    int b = operand.pop();
+
+                    operand.push(performOperation(b, a, op));
+                }
+
+                operator.push(ch);
+            }
+
+            index++;
+        }
+
+        while (!operator.isEmpty()) {
+            char op = operator.pop();
+            int a = operand.pop();
+            int b = operand.pop();
+
+            operand.push(performOperation(b, a, op));
+        }
+
+        return operand.peek();
+    }
+}
