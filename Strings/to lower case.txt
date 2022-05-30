@@ -1,0 +1,15 @@
+class Solution {
+    public String toLowerCase(String input) {
+        StringBuilder ans = new StringBuilder();
+
+        for (char ch : input.toCharArray()) {
+            if (ch >= 'A' && ch <= 'Z') {
+                ans.append((char) (ch + 32));
+            } else {
+                ans.append(ch);
+            }
+        }
+
+        return ans.toString();
+    }
+}
