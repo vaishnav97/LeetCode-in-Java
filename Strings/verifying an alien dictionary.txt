@@ -1,0 +1,38 @@
+class Solution {
+    private Map<Character, Integer> map;
+
+    private boolean checkOrder(String current, String next) {
+        int index = 0;
+
+        while (index < Math.min(current.length(), next.length())) {
+            if (current.charAt(index) != next.charAt(index)) {
+                return map.get(current.charAt(index)) < map.get(next.charAt(index));
+            }
+
+            index++;
+        }
+
+        return current.length() <= next.length();
+    }
+
+    public boolean isAlienSorted(String[] words, String order) {
+        map = new HashMap<>();
+
+        int index = 0;
+        for (char ch : order.toCharArray()) {
+            map.put(ch, index);
+            index++;
+        }
+
+        for (int i = 0; i < words.length - 1; i++) {
+            String word1 = words[i];
+            String word2 = words[i + 1];
+
+            if (!checkOrder(word1, word2)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
