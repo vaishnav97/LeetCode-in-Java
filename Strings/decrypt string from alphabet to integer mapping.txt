@@ -1,0 +1,23 @@
+class Solution {
+    public String freqAlphabets(String input) {
+        StringBuilder ans = new StringBuilder();
+
+        int n = input.length(), index = 0;
+
+        while (index < n) {
+            if (index + 2 < n && input.charAt(index + 2) == '#') {
+                int num = Integer.parseInt(input.substring(index, index + 2)) - 1;
+
+                ans.append((char) (num + 'a'));
+                index += 3;
+            } else {
+                int num = Integer.parseInt(String.valueOf(input.charAt(index))) - 1;
+
+                ans.append((char) (num + 'a'));
+                index++;
+            }
+        }
+
+        return ans.toString();
+    }
+}
