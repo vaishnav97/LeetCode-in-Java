@@ -1,0 +1,30 @@
+class Solution {
+    public int sumOddLengthSubarrays(int[] arr) {
+        int n = arr.length;
+
+        int[] prefixSum = new int[n];
+        prefixSum[0] = arr[0];
+
+        for (int index = 1; index < n; index++) {
+            prefixSum[index] = prefixSum[index - 1] + arr[index];
+        }
+
+        int sum = prefixSum[n - 1];
+
+        int windowLen = 3;
+        while (windowLen <= n) {
+            for (int left = 0; left + windowLen <= n; left++) {
+                int right = left + windowLen - 1;
+
+                sum += prefixSum[right];
+                if (left != 0) {
+                    sum -= prefixSum[left - 1];
+                }
+            }
+
+            windowLen += 2;
+        }
+
+        return sum;
+    }
+}
