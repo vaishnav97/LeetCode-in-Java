@@ -1,0 +1,19 @@
+class Solution {
+    public int[][] matrixReshape(int[][] mat, int r, int c) {
+        if ((r * c) != (mat.length * mat[0].length)) {
+            return mat;
+        }
+
+        int[][] ans = new int[r][c];
+
+        int index = 0;
+        for (int[] row : mat) {
+            for (int num : row) {
+                ans[index / c][index % c] = num;
+                index++;
+            }
+        }
+
+        return ans;
+    }
+}
