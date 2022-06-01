@@ -1,0 +1,48 @@
+Iterative:
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int depth = 0;
+
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            depth++;
+
+            int n = queue.size();
+
+            while (n-- > 0) {
+                TreeNode node = queue.poll();
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+        }
+
+        return depth;
+    }
+}
+
+
+
+Recursive:
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+}
