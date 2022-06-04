@@ -1,0 +1,29 @@
+class Solution {
+    public int firstUniqChar(String str) {
+        char[] input = str.toCharArray();
+
+        int[] count = new int[26];
+        Arrays.fill(count, 0);
+
+        int[] index = new int[26];
+        Arrays.fill(index, -1);
+
+        for (int i = 0; i < input.length; i++) {
+            count[input[i] - 'a']++;
+
+            if (index[input[i] - 'a'] == -1) {
+                index[input[i] - 'a'] = i;
+            }
+        }
+
+        int ans = Integer.MAX_VALUE;
+
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] == 1) {
+                ans = Math.min(ans, index[i]);
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+}
