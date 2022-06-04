@@ -1,0 +1,42 @@
+class Solution {
+    private boolean isPresent(int[] nums, int target) {
+        int n = nums.length, low = 0, high = n - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                return true;
+            }
+
+            if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> visited = new HashSet<>();
+
+        Arrays.sort(nums2);
+
+        for (int num : nums1) {
+            if (isPresent(nums2, num)) {
+                visited.add(num);
+            }
+        }
+
+        int arrSize = visited.size(), index = 0;
+        int[] ans = new int[arrSize];
+
+        for (Integer num : visited) {
+            ans[index++] = num;
+        }
+
+        return ans;
+    }
+}
