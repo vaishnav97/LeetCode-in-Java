@@ -4,21 +4,24 @@ class Solution {
             return new int[] {};
         }
 
-        int[] ans = new int[nums.length];
+        int n = nums.length;
+        int[] ans = new int[n];
 
-        int left = 0, right = nums.length - 1, index = right;
+        int low = 0, high = n - 1, index = n - 1;
 
-        while (left <= right) {
-            int a = nums[left] * nums[left];
-            int b = nums[right] * nums[right];
+        while (low <= high) {
+            int a = nums[low] * nums[low];
+            int b = nums[high] * nums[high];
 
             if (a < b) {
-                ans[index--] = b;
-                right--;
+                ans[index] = b;
+                high--;
             } else {
-                ans[index--] = a;
-                left++;
+                ans[index] = a;
+                low++;
             }
+
+            index--;
         }
 
         return ans;
