@@ -1,0 +1,23 @@
+class NumArray {
+    private int[] prefix = null;
+
+    public NumArray(int[] nums) {
+        int n = nums.length;
+
+        this.prefix = new int[n];
+
+        this.prefix[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            this.prefix[i] = this.prefix[i - 1] + nums[i];
+        }
+    }
+
+    public int sumRange(int left, int right) {
+        int sum = this.prefix[right];
+        if (left != 0) {
+            sum -= this.prefix[left - 1];
+        }
+
+        return sum;
+    }
+}
