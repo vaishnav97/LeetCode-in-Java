@@ -1,0 +1,30 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        int[] count = new int[26];
+        Arrays.fill(count, 0);
+
+        for (char ch : s.toCharArray()) {
+            int index = ch - 'a';
+
+            count[index]++;
+        }
+
+        for (char ch : t.toCharArray()) {
+            int index = ch - 'a';
+
+            if (count[index] > 0) {
+                count[index]--;
+            } else {
+                count[index]++;
+            }
+        }
+
+        for (int freq : count) {
+            if (freq != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
