@@ -1,0 +1,30 @@
+class Solution {
+    public int[] sortByBits(int[] arr) {
+        Integer[] arrObj = new Integer[arr.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            arrObj[i] = arr[i];
+        }
+
+        final Comparator<Integer> myComparator = new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+                int o1_bits = Integer.bitCount(o1);
+                int o2_bits = Integer.bitCount(o2);
+
+                if (o1_bits == o2_bits) {
+                    return Integer.compare(o1, o2);
+                }
+
+                return Integer.compare(o1_bits, o2_bits);
+            }
+        };
+
+        Arrays.sort(arrObj, myComparator);
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = arrObj[i];
+        }
+
+        return arr;
+    }
+}
