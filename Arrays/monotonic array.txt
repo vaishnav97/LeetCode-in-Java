@@ -1,0 +1,20 @@
+class Solution {
+    public boolean isMonotonic(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) {
+            return true;
+        }
+
+        int sign = (nums[n - 1] - nums[0]) >= 0 ? 1 : -1;
+
+        for (int index = 1; index < n; index++) {
+            int diff = nums[index] - nums[index - 1];
+
+            if (sign * diff < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
