@@ -1,0 +1,25 @@
+class Solution {
+    public boolean ans = true;
+
+    private int calculateHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = calculateHeight(root.left);
+        int rightHeight = calculateHeight(root.right);
+
+        ans = ans && (Math.abs(leftHeight - rightHeight) <= 1);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        calculateHeight(root);
+        return ans;
+    }
+}
