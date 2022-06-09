@@ -1,0 +1,34 @@
+class Solution {
+    public boolean repeatedSubstringPattern(String input) {
+        int n = input.length();
+
+        if (n == 0) {
+            return true;
+        }
+
+        for (int len = 1; len <= (n / 2); len++) {
+            if (n % len != 0) {
+                continue;
+            }
+
+            String comp = input.substring(0, len);
+            int i = len, j = i + len - 1;
+
+            while (j < n) {
+                String temp = input.substring(i, j + 1);
+                if (!temp.equals(comp)) {
+                    break;
+                }
+
+                i += len;
+                j += len;
+            }
+
+            if (i == n) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
