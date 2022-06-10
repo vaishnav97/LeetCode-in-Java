@@ -1,7 +1,6 @@
 class Solution {
     public char nextGreatestLetter(char[] letters, char target) {
-        int len = letters.length;
-        int start = 0, end = len - 1;
+        int start = 0, end = letters.length - 1;
 
         while (start <= end) {
             int mid = start + (end - start) / 2;
@@ -13,6 +12,6 @@ class Solution {
             }
         }
 
-        return letters[start % len];
+        return letters[start % (letters.length)];
     }
 }
