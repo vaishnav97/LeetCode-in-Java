@@ -1,43 +1,23 @@
 class Solution {
-    private boolean isPresent(int[] nums, int target) {
-        int n = nums.length, low = 0, high = n - 1;
-
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            if (nums[mid] == target) {
-                return true;
-            }
-
-            if (nums[mid] < target) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-
-        return false;
-    }
-
     public int[] intersection(int[] nums1, int[] nums2) {
-        if (nums1.length > nums2.length) {
-            return intersection(nums2, nums1);
-        }
-
-        Set<Integer> visited = new HashSet<>();
-
-        Arrays.sort(nums2);
+        Set<Integer> set = new HashSet<>();
 
         for (int num : nums1) {
-            if (isPresent(nums2, num)) {
-                visited.add(num);
+            set.add(num);
+        }
+
+        Set<Integer> finalSet = new HashSet<>();
+
+        for (int num : nums2) {
+            if (set.contains(num)) {
+                finalSet.add(num);
             }
         }
 
-        int arrSize = visited.size(), index = 0;
-        int[] ans = new int[arrSize];
+        int[] ans = new int[finalSet.size()];
 
-        for (Integer num : visited) {
+        int index = 0;
+        for (Integer num : finalSet) {
             ans[index++] = num;
         }
 
