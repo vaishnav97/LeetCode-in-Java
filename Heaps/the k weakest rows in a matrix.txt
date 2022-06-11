@@ -1,0 +1,71 @@
+class Element {
+    int count;
+    int index;
+
+    Element(int count, int index) {
+        this.count = count;
+        this.index = index;
+    }
+}
+
+
+class ElementComparator implements Comparator<Element> {
+    public int compare(Element e1, Element e2) {
+        if (e1.count == e2.count) {
+            return Integer.compare(e2.index, e1.index);
+        }
+
+        return Integer.compare(e2.count, e1.count);
+    }
+}
+
+
+class Solution {
+    private int binarySearch(int[] nums) {
+        int n = nums.length, start = 0, end = n - 1;
+
+        if (nums[end] == 1) {
+            return n;
+        }
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (nums[mid] > nums[mid + 1]) {
+                return mid + 1;
+            }
+
+            if (nums[mid] == 1 && nums[mid] == nums[mid + 1]) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        return 0;
+    }
+
+    public int[] kWeakestRows(int[][] matrix, int k) {
+        Queue<Element> pq = new PriorityQueue<>(new ElementComparator());
+
+        for (int index = 0; index < matrix.length; index++) {
+            int count = binarySearch(matrix[index]);
+
+            pq.add(new Element(count, index));
+
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        int[] ans = new int[pq.size()];
+
+        int index = pq.size() - 1;
+        while (!pq.isEmpty()) {
+            Element element = pq.poll();
+            ans[index--] = element.index;
+        }
+
+        return ans;
+    }
+}
