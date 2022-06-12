@@ -4,24 +4,24 @@ class Solution {
             return intersect(nums2, nums1);
         }
 
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> count = new HashMap<>();
         for (int num : nums1) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            count.put(num, count.getOrDefault(num, 0) + 1);
         }
 
         List<Integer> res = new ArrayList<>();
+
         for (int num : nums2) {
-            if (map.containsKey(num) && map.get(num) > 0) {
+            if (count.containsKey(num) && count.get(num) > 0) {
                 res.add(num);
 
-                map.put(num, map.get(num) - 1);
+                count.put(num, count.get(num) - 1);
             }
         }
 
-        int arrSize = res.size(), index = 0;
+        int[] ans = new int[res.size()];
 
-        int[] ans = new int[arrSize];
-
+        int index = 0;
         for (Integer num : res) {
             ans[index++] = num;
         }
