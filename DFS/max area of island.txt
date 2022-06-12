@@ -1,9 +1,9 @@
 class Solution {
-    private int[] dx = { 0, 0, -1, 1 };
-    private int[] dy = { 1, -1, 0, 0 };
+    private int[] dx = {0, 0, -1, 1};
+    private int[] dy = {1, -1, 0, 0};
 
-    private int countIsland(int[][] grid, int x, int y) {
-        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) {
+    private int helper(int[][] grid, int x, int y) {
+        if (x < 0 || x == grid.length || y < 0 || y == grid[0].length) {
             return 0;
         }
 
@@ -11,12 +11,12 @@ class Solution {
             return 0;
         }
 
-        int count = 1;
-
         grid[x][y] = 0;
 
+        int count = 1;
+
         for (int i = 0; i < dx.length; i++) {
-            count += countIsland(grid, x + dx[i], y + dy[i]);
+            count += helper(grid, x + dx[i], y + dy[i]);
         }
 
         return count;
@@ -28,9 +28,9 @@ class Solution {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == 1) {
-                    int count = countIsland(grid, i, j);
+                    int res = helper(grid, i, j);
 
-                    ans = Math.max(ans, count);
+                    ans = Math.max(ans, res);
                 }
             }
         }
