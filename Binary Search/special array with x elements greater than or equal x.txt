@@ -1,4 +1,20 @@
 class Solution {
+    private int indexOfJustSmallerElementThanTarget(int[] nums, int target) {
+        int n = nums.length, start = 0, end = n - 1;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (nums[mid] >= target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+
+        return end;
+    }
+
     public int specialArray(int[] nums) {
         int n = nums.length, start = 0, end = n;
 
@@ -7,18 +23,15 @@ class Solution {
         while (start <= end) {
             int mid = start + (end - start) / 2;
 
-            int count = 0;
-            for (int num : nums) {
-                if (num >= mid) {
-                    count++;
-                }
-            }
+            int index = indexOfJustSmallerElementThanTarget(nums, mid);
 
-            if (count == mid) {
+            int elemCount = n - index - 1;
+
+            if (elemCount == mid) {
                 return mid;
             }
 
-            if (count > mid) {
+            if (elemCount > mid) { // this part is important
                 start = mid + 1;
             } else {
                 end = mid - 1;
