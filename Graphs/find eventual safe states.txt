@@ -1,0 +1,54 @@
+class Solution {
+
+    private enum STATUS {
+        UNVISITED, VISITED, UNSAFE, SAFE;
+    }
+
+    private STATUS[] status;
+
+    private boolean checkCyclic(int[][] graph, int src) {
+        status[src] = STATUS.VISITED;
+
+        for (int neighbour : graph[src]) {
+            if (status[neighbour] == STATUS.SAFE) {
+                continue;
+            }
+
+            if (status[neighbour] == STATUS.UNVISITED) {
+                if (checkCyclic(graph, neighbour)) {
+                    status[src] = STATUS.UNSAFE;
+                    return true;
+                }
+            } else {
+                status[src] = STATUS.UNSAFE;
+                return true;
+            }
+        }
+
+        status[src] = STATUS.SAFE;
+        return false;
+    }
+
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int n = graph.length;
+
+        status = new STATUS[n];
+        Arrays.fill(status, STATUS.UNVISITED);
+
+        for (int i = 0; i < n; i++) {
+            if (status[i] == STATUS.UNVISITED) {
+                checkCyclic(graph, i);
+            }
+        }
+
+        List<Integer> ans = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (status[i] == STATUS.SAFE) {
+                ans.add(i);
+            }
+        }
+
+        return ans;
+    }
+}
