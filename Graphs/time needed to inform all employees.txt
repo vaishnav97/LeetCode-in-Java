@@ -1,0 +1,45 @@
+class Employee {
+    int empId;
+    int informTime;
+
+    Employee(int empId, int informTime) {
+        this.empId = empId;
+        this.informTime = informTime;
+    }
+}
+
+
+class Solution {
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        Map<Integer, List<Integer>> managerMap = new HashMap<>();
+
+        for (int i = 0; i < manager.length; i++) {
+            if (manager[i] == -1) {
+                continue;
+            }
+
+            managerMap.putIfAbsent(manager[i], new ArrayList<>());
+            managerMap.get(manager[i]).add(i);
+        }
+
+        ArrayDeque<Employee> managerQueue = new ArrayDeque<>();
+        managerQueue.offer(new Employee(headID, 0));
+
+        int totalInformTime = 0;
+
+        while (!managerQueue.isEmpty()) {
+            Employee employee = managerQueue.poll();
+
+            totalInformTime = Math.max(totalInformTime, employee.informTime);
+
+            if (managerMap.containsKey(employee.empId)) {
+                for (Integer subordinate : managerMap.get(employee.empId)) {
+                    managerQueue.offer(new Employee(subordinate,
+                            employee.informTime + informTime[employee.empId]));
+                }
+            }
+        }
+
+        return totalInformTime;
+    }
+}
