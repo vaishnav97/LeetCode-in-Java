@@ -1,0 +1,47 @@
+class Solution {
+    private enum COLOR {
+        WHITE, BLUE, GREEN;
+    }
+
+    private COLOR[] color;
+
+    private boolean checkBipartite(int[][] graph, int src) {
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+
+        queue.offer(src);
+        color[src] = COLOR.BLUE;
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+
+            for (int neighbour : graph[node]) {
+                if (color[neighbour] == COLOR.WHITE) {
+                    color[neighbour] = color[node] == COLOR.BLUE ? COLOR.GREEN : COLOR.BLUE;
+
+                    queue.offer(neighbour);
+                } else if (color[neighbour] == color[node]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+
+        color = new COLOR[n];
+        Arrays.fill(color, COLOR.WHITE);
+
+        for (int i = 0; i < n; i++) {
+            if (color[i] == COLOR.WHITE) {
+                if (!checkBipartite(graph, i)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
