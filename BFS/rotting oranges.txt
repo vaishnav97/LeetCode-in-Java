@@ -1,54 +1,60 @@
-class Point {
-    int x;
-    int y;
+class Node {
+    int x, y;
 
-    Point(int x, int y) {
+    Node(int x, int y) {
         this.x = x;
         this.y = y;
     }
 }
 
+
 class Solution {
-    private int[] dx = { 0, 0, 1, -1 };
-    private int[] dy = { 1, -1, 0, 0 };
+    private int[] dx = {0, 0, -1, 1};
+    private int[] dy = {1, -1, 0, 0};
 
-    public int orangesRotting(int[][] grid) {
-        ArrayDeque<Point> queue = new ArrayDeque<>();
+    public int orangesRotting(int[][] mat) {
+        int row = mat.length, col = mat[0].length, oranges = 0, level = 0;
 
-        int row = grid.length, col = grid[0].length, oranges = 0;
+        ArrayDeque<Node> queue = new ArrayDeque<>();
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (grid[i][j] == 2) {
-                    queue.offer(new Point(i, j));
-                } else if (grid[i][j] == 1) {
+                if (mat[i][j] == 2) {
+                    queue.offer(new Node(i, j));
+                } else if (mat[i][j] == 1) {
                     oranges++;
                 }
             }
         }
 
-        int level = 0;
+        if (oranges == 0) {
+            return level;
+        }
+
         while (!queue.isEmpty() && oranges > 0) {
+            int n = queue.size();
+
             level++;
 
-            int n = queue.size();
             while (n-- > 0) {
-                Point node = queue.poll();
+                Node node = queue.poll();
+                int x = node.x, y = node.y;
 
-                for (int i = 0; i < 4; i++) {
-                    int x = node.x + dx[i];
-                    int y = node.y + dy[i];
+                for (int i = 0; i < dx.length; i++) {
+                    int new_x = x + dx[i];
+                    int new_y = y + dy[i];
 
-                    if (x < 0 || x == row || y < 0 || y == col) {
+                    if (new_x < 0 || new_x == mat.length || new_y < 0 || new_y == mat[0].length) {
                         continue;
                     }
 
-                    if (grid[x][y] == 1) {
-                        oranges--;
-                        grid[x][y] = 2;
-
-                        queue.offer(new Point(x, y));
+                    if (mat[new_x][new_y] != 1) {
+                        continue;
                     }
+
+                    oranges--;
+                    mat[new_x][new_y] = 2;
+                    queue.offer(new Node(new_x, new_y));
                 }
             }
         }
