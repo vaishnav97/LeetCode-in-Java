@@ -1,56 +1,59 @@
 class Solution {
-    private int[] dx = { 0, 0, -1, 1 };
-    private int[] dy = { 1, -1, 0, 0 };
+    private int[] dx = {0, 0, -1, 1};
+    private int[] dy = {1, -1, 0, 0};
 
-    private void markIsland(int[][] grid, int x, int y) {
-        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) {
-            return;
-        }
-
-        if (grid[x][y] == 0) {
-            return;
-        }
-
+    private void markBoundary(int[][] grid, int x, int y) {
         grid[x][y] = 0;
 
         for (int i = 0; i < dx.length; i++) {
-            markIsland(grid, x + dx[i], y + dy[i]);
+            int new_x = x + dx[i];
+            int new_y = y + dy[i];
+
+            if (new_x < 0 || new_x == grid.length || new_y < 0 || new_y == grid[0].length) {
+                continue;
+            }
+
+            if (grid[new_x][new_y] == 0) {
+                continue;
+            }
+
+            markBoundary(grid, new_x, new_y);
         }
     }
 
     public int numEnclaves(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
+        int row = grid.length, col = grid[0].length;
 
-        int ans = 0;
-
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < row; i++) {
             if (grid[i][0] == 1) {
-                markIsland(grid, i, 0);
+                markBoundary(grid, i, 0);
             }
 
-            if (grid[i][n - 1] == 1) {
-                markIsland(grid, i, n - 1);
+            if (grid[i][col - 1] == 1) {
+                markBoundary(grid, i, col - 1);
             }
         }
 
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < col; j++) {
             if (grid[0][j] == 1) {
-                markIsland(grid, 0, j);
+                markBoundary(grid, 0, j);
             }
 
-            if (grid[m - 1][j] == 1) {
-                markIsland(grid, m - 1, j);
+            if (grid[row - 1][j] == 1) {
+                markBoundary(grid, row - 1, j);
             }
         }
 
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
+        int count = 0;
+
+        for (int i = 1; i < row - 1; i++) {
+            for (int j = 1; j < col - 1; j++) {
                 if (grid[i][j] == 1) {
-                    ans++;
+                    count++;
                 }
             }
         }
 
-        return ans;
+        return count;
     }
 }
