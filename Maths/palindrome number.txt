@@ -1,0 +1,18 @@
+class Solution {
+    private int reverseNumber(int num) {
+        int ans = 0;
+
+        while (num > 0) {
+            ans = ans * 10 + num % 10;
+            num /= 10;
+        }
+
+        return ans;
+    }
+
+    public boolean isPalindrome(int x) {
+        int reverseNum = reverseNumber(x);
+
+        return Integer.compare(x, reverseNum) == 0;
+    }
+}
