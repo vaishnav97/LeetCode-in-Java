@@ -1,0 +1,43 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> ans = new ArrayList<>();
+
+        if (digits.length() == 0) {
+            return ans;
+        }
+
+        HashMap<Integer, String> dialers = new HashMap<>();
+
+        dialers.put(2, "abc");
+        dialers.put(3, "def");
+        dialers.put(4, "ghi");
+        dialers.put(5, "jkl");
+        dialers.put(6, "mno");
+        dialers.put(7, "pqrs");
+        dialers.put(8, "tuv");
+        dialers.put(9, "wxyz");
+
+        ArrayDeque<String> queue = new ArrayDeque<>();
+        queue.offer("");
+
+        for (Character digit : digits.toCharArray()) {
+            int num = Integer.parseInt(Character.toString(digit));
+            String dialer = dialers.get(num);
+
+            int n = queue.size();
+            while (n-- > 0) {
+                String front = queue.poll();
+
+                for (Character ch : dialer.toCharArray()) {
+                    queue.offer(front + ch);
+                }
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            ans.add(queue.poll());
+        }
+
+        return ans;
+    }
+}
