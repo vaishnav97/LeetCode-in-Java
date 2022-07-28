@@ -1,12 +1,12 @@
 class Solution {
-    private enum RomanNumeral {
-        M("M", 1000), CM("CM", 900), D("D", 500), CD("CD", 400), C("C", 100), XC("XC", 90), L("L",
-                50), XL("XL", 40), X("X", 10), IX("IX", 9), V("V", 5), IV("IV", 4), I("I", 1);
+    private enum ROMAN {
+        I("I", 1), IV("IV", 4), V("V", 5), IX("IX", 9), X("X", 10), XL("XL", 40), L("L", 50), XC(
+                "XC", 90), C("C", 100), CD("CD", 400), D("D", 500), CM("CM", 900), M("M", 1000);
 
         private final String symbol;
         private final int value;
 
-        RomanNumeral(String symbol, int value) {
+        private ROMAN(String symbol, int value) {
             this.symbol = symbol;
             this.value = value;
         }
@@ -18,21 +18,48 @@ class Solution {
         public String getSymbol() {
             return this.symbol;
         }
+
+        private static final ROMAN[] values;
+        private static final int[] romanValues;
+
+        static {
+            values = values();
+            romanValues = new int[values.length];
+
+            for (int i = 0; i < values.length; i++) {
+                romanValues[i] = values[i].value;
+            }
+        }
+
+        static ROMAN nearestRoman(int num) {
+            int start = 0, end = values.length - 1;
+
+            while (start <= end) {
+                int mid = start + (end - start) / 2;
+
+                if (romanValues[mid] == num) {
+                    return values[mid];
+                }
+
+                if (romanValues[mid] < num) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+
+            return values[start - 1];
+        }
     }
 
     public String intToRoman(int num) {
         StringBuilder ans = new StringBuilder();
 
-        for (RomanNumeral roman : RomanNumeral.values()) {
-            if (num >= roman.getValue()) {
-                int times = num / roman.getValue();
+        while (num > 0) {
+            ROMAN roman = ROMAN.nearestRoman(num);
 
-                for (int i = 0; i < times; i++) {
-                    ans.append(roman.getSymbol());
-                }
-
-                num -= roman.getValue() * times;
-            }
+            num -= roman.getValue();
+            ans.append(roman.getSymbol());
         }
 
         return ans.toString();
