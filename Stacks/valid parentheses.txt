@@ -1,21 +1,54 @@
 class Solution {
+    private enum Open_Brackets {
+        PARENTHESES('('), SQUARE('['), CURLY('{');
+
+        private final char bracket;
+
+        private Open_Brackets(char bracket) {
+            this.bracket = bracket;
+        }
+
+        public char getBracket() {
+            return this.bracket;
+        }
+    }
+
+    private enum Closed_Brackets {
+        PARENTHESES(')'), SQUARE(']'), CURLY('}');
+
+        private final char bracket;
+
+        private Closed_Brackets(char bracket) {
+            this.bracket = bracket;
+        }
+
+        public char getBracket() {
+            return this.bracket;
+        }
+    }
+
+    private static final Map<Character, Character> brackets;
+
+    static {
+        brackets = new HashMap<>();
+        brackets.put(Open_Brackets.CURLY.getBracket(), Closed_Brackets.CURLY.getBracket());
+        brackets.put(Open_Brackets.SQUARE.getBracket(), Closed_Brackets.SQUARE.getBracket());
+        brackets.put(Open_Brackets.PARENTHESES.getBracket(),
+                Closed_Brackets.PARENTHESES.getBracket());
+    }
+
     public boolean isValid(String input) {
-        int len = input.length();
-        if (len == 1) {
+        if (input.length() == 1) {
             return false;
         }
 
-        Map<Character, Character> brackets = new HashMap<>();
-        brackets.put('(', ')');
-        brackets.put('[', ']');
-        brackets.put('{', '}');
-
         ArrayDeque<Character> stack = new ArrayDeque<>();
+
         for (char ch : input.toCharArray()) {
             if (brackets.containsKey(ch)) {
-                stack.push(brackets.get(ch));
+                stack.push(ch);
             } else {
-                if (stack.isEmpty() || ch != stack.peek()) {
+                if (stack.isEmpty() || ch != brackets.get(stack.peek())) {
                     return false;
                 }
 
