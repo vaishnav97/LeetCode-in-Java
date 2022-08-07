@@ -1,0 +1,27 @@
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0) {
+            return 0;
+        }
+
+        if (divisor == 1) {
+            return dividend;
+        }
+
+        if (divisor == -1) {
+            return dividend == Integer.MIN_VALUE ? Integer.MAX_VALUE : -1 * dividend;
+        }
+
+        boolean isNegative = (dividend < 0) ^ (divisor < 0);
+        long new_dividend = Math.abs((long) dividend);
+        long new_divisor = Math.abs((long) divisor);
+
+        int count = 0;
+        while (new_dividend >= new_divisor) {
+            count++;
+            new_dividend -= new_divisor;
+        }
+
+        return isNegative ? -1 * count : count;
+    }
+}
